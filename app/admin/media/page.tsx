@@ -7,12 +7,13 @@ export const metadata = {
 };
 
 export default async function MediaListPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: media } = await supabase
     .from("media")
     .select("*")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .returns<any[]>();
 
   return (
     <div className="space-y-6">

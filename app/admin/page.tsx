@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 export default async function AdminDashboard() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Statistiques
   const [
@@ -32,7 +32,8 @@ export default async function AdminDashboard() {
       .from("media")
       .select("id, title, type, created_at, status")
       .order("created_at", { ascending: false })
-      .limit(5),
+      .limit(5)
+      .returns<any[]>(),
   ]);
 
   const stats = [

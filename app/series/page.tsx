@@ -7,14 +7,15 @@ export const metadata = {
 };
 
 export default async function SeriesPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: series } = await supabase
     .from("media")
     .select("*")
     .eq("type", "tv")
     .eq("status", "published")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .returns<any[]>();
 
   return (
     <div className="container mx-auto px-4 py-8">

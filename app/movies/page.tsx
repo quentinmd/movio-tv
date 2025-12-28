@@ -7,14 +7,15 @@ export const metadata = {
 };
 
 export default async function MoviesPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: movies } = await supabase
     .from("media")
     .select("*")
     .eq("type", "movie")
     .eq("status", "published")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .returns<any[]>();
 
   return (
     <div className="container mx-auto px-4 py-8">

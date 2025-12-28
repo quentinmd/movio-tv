@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import {
   movieSchema,
   tvShowSchema,
@@ -14,7 +14,7 @@ import { createClient } from "@/lib/supabase/client";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 
-export default function NewMediaPage() {
+function NewMediaForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const mediaType = (searchParams.get("type") as "movie" | "tv") || "movie";
@@ -205,7 +205,7 @@ export default function NewMediaPage() {
                 className="w-full px-4 py-2 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 placeholder="https://lulustream.com/..."
               />
-              {errors.embed_url && (
+              {(errors as any).embed_url && (
                 <p className="mt-1 text-sm text-red-500">
                   {(errors as any).embed_url.message}
                 </p>
@@ -321,5 +321,13 @@ export default function NewMediaPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function NewMediaPage() {
+  return (
+    <Suspense fallback={<div className="p-6">Chargement...</div>}>
+      <NewMediaForm />
+    </Suspense>
   );
 }

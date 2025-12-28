@@ -7,20 +7,22 @@ import MediaCarousel from "@/components/MediaCarousel";
 export const revalidate = 60; // Revalider toutes les 60 secondes
 
 export default async function HomePage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // Récupérer tous les médias publiés
   const { data: allMedia } = await supabase
     .from("media")
     .select("*")
     .eq("status", "published")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .returns<any[]>();
 
   // Récupérer les catégories pour les carrousels
   const { data: categories } = await supabase
     .from("categories")
     .select("*")
-    .order("name");
+    .order("name")
+    .returns<any[]>();
 
   // Media featured (le plus récent pour le hero)
   const featuredMedia = allMedia?.[0];

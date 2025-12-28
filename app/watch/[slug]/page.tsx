@@ -7,18 +7,19 @@ import TVShowPlayer from "@/components/TVShowPlayer";
 import { formatDuration } from "@/lib/utils";
 
 interface WatchPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{
+    slug: string
+  }>
 }
 
 export async function generateMetadata({ params }: WatchPageProps) {
-  const supabase = createClient();
+  const { slug } = await params
+  const supabase = await createClient();
   const { data: media } = await supabase
     .from("media")
     .select("title, description")
-    .eq("slug", params.slug)
-    .single();
+    .eq('slug', slug)
+    .single() as { data: any };
 
   if (!media) {
     return {
@@ -33,15 +34,16 @@ export async function generateMetadata({ params }: WatchPageProps) {
 }
 
 export default async function WatchPage({ params }: WatchPageProps) {
-  const supabase = createClient();
+  const { slug } = await params
+  const supabase = await createClient()
 
   // Récupérer le média
   const { data: media } = await supabase
-    .from("media")
-    .select("*")
-    .eq("slug", params.slug)
+    .from('media')
+    .select('*')
+    .eq('slug', slug)
     .eq("status", "published")
-    .single();
+    .single() as { data: any };
 
   if (!media) {
     notFound();
@@ -61,7 +63,8 @@ export default async function WatchPage({ params }: WatchPageProps) {
       `
       )
       .eq("media_id", media.id)
-      .order("season_number", { ascending: true });
+      .order("season_number", { ascending: true })
+      .returns<any[]>();
 
     seasons = seasonsData || [];
 

@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function createMedia(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const data = {
     title: formData.get("title") as string,
@@ -28,7 +28,7 @@ export async function createMedia(formData: FormData) {
 
   const { data: media, error } = await supabase
     .from("media")
-    .insert(data)
+    .insert(data as any)
     .select()
     .single();
 
@@ -41,7 +41,7 @@ export async function createMedia(formData: FormData) {
 }
 
 export async function updateMedia(id: string, formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const data = {
     title: formData.get("title") as string,
@@ -61,7 +61,7 @@ export async function updateMedia(id: string, formData: FormData) {
     status: formData.get("status") as "draft" | "published" | "archived",
   };
 
-  const { error } = await supabase.from("media").update(data).eq("id", id);
+  const { error } = await supabase.from("media").update(data as any).eq("id", id);
 
   if (error) {
     throw new Error(error.message);
@@ -72,7 +72,7 @@ export async function updateMedia(id: string, formData: FormData) {
 }
 
 export async function deleteMedia(id: string) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { error } = await supabase.from("media").delete().eq("id", id);
 
@@ -85,7 +85,7 @@ export async function deleteMedia(id: string) {
 }
 
 export async function createSeason(mediaId: string, formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const data = {
     media_id: mediaId,
@@ -110,7 +110,7 @@ export async function createSeason(mediaId: string, formData: FormData) {
 }
 
 export async function createEpisode(seasonId: string, formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const data = {
     season_id: seasonId,
@@ -139,7 +139,7 @@ export async function createEpisode(seasonId: string, formData: FormData) {
 }
 
 export async function signOut() {
-  const supabase = createClient();
+  const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/");
 }
