@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Play, Info } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import MediaCarousel from "@/components/MediaCarousel";
+import HeroCarousel from "@/components/HeroCarousel";
 
 export const revalidate = 60; // Revalider toutes les 60 secondes
 
@@ -24,8 +25,27 @@ export default async function HomePage() {
     .order("name")
     .returns<any[]>();
 
-  // Media featured (le plus récent pour le hero)
-  const featuredMedia = allMedia?.[0];
+  // Films tendances pour le hero (top 5 par rating et récents)
+  const trendingMedia =
+    allMedia
+      ?.filter((m) => m.rating && m.rating >= 7) // Minimum 7/10
+      .sort((a, b) => {
+        // Trier par rating puis par date
+        const ratingDiff = (b.rating || 0) - (a.rating || 0);
+        if (ratingDiff !== 0) return ratingDiff;
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      })
+      .slice(0, 5) || [];
+
+  // Si pas assez de films avec rating élevé, prendre les plus récents
+  if (trendingMedia.length < 3) {
+    const recentMedia = allMedia?.slice(0, 5) || [];
+    trendingMedia.push(
+      ...recentMedia.filter((m) => !trendingMedia.includes(m))
+    );
+  }
 
   // Grouper les médias par type
   const movies = allMedia?.filter((m) => m.type === "movie") || [];
@@ -68,83 +88,8 @@ export default async function HomePage() {
 
   return (
     <div className="animate-fade-in">
-      {/* Hero Banner */}
-      {featuredMedia && (
-        <section className="relative h-[70vh] min-h-[500px] w-full">
-          {/* Image de fond */}
-          <div className="absolute inset-0">
-            <Image
-              src={
-                featuredMedia.backdrop_url ||
-                featuredMedia.poster_url ||
-                "/placeholder.jpg"
-              }
-              alt={featuredMedia.title}
-              fill
-              className="object-cover"
-              priority
-            />
-            {/* Overlay gradients */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-          </div>
-
-          {/* Contenu */}
-          <div className="relative container mx-auto px-4 h-full flex items-center">
-            <div className="max-w-2xl space-y-4">
-              <div className="inline-block px-3 py-1 bg-red-600 text-white text-sm font-semibold rounded">
-                {featuredMedia.type === "movie" ? "Film" : "Série"} à la une
-              </div>
-
-              <h1 className="text-5xl md:text-6xl font-bold">
-                {featuredMedia.title}
-              </h1>
-
-              {featuredMedia.description && (
-                <p className="text-lg text-gray-300 line-clamp-3">
-                  {featuredMedia.description}
-                </p>
-              )}
-
-              <div className="flex items-center space-x-4 text-sm">
-                {featuredMedia.year && (
-                  <span className="text-gray-300">{featuredMedia.year}</span>
-                )}
-                {featuredMedia.duration && (
-                  <span className="text-gray-300">
-                    {featuredMedia.duration} min
-                  </span>
-                )}
-                {featuredMedia.rating && (
-                  <span className="flex items-center space-x-1 text-yellow-500">
-                    <span>★</span>
-                    <span>{featuredMedia.rating.toFixed(1)}</span>
-                  </span>
-                )}
-              </div>
-
-              {/* Boutons d'action */}
-              <div className="flex space-x-4 pt-4">
-                <Link
-                  href={`/watch/${featuredMedia.slug}`}
-                  className="flex items-center space-x-2 bg-white text-black px-8 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
-                >
-                  <Play className="h-5 w-5" fill="currentColor" />
-                  <span>Regarder maintenant</span>
-                </Link>
-
-                <Link
-                  href={`/watch/${featuredMedia.slug}`}
-                  className="flex items-center space-x-2 bg-white/20 backdrop-blur text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/30 transition-colors"
-                >
-                  <Info className="h-5 w-5" />
-                  <span>Plus d'infos</span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Hero Banner avec carousel */}
+      {trendingMedia.length > 0 && <HeroCarousel items={trendingMedia} />}
 
       {/* Carrousels de contenu */}
       <div className="container mx-auto px-4 space-y-12 py-12">
