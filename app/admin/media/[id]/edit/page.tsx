@@ -16,13 +16,12 @@ function EditMediaForm({ id }: { id: string }) {
     slug: "",
     description: "",
     type: "movie" as "movie" | "tv",
-    release_date: "",
+    year: "",
     duration: "",
     rating: "",
     poster_url: "",
     backdrop_url: "",
-    trailer_url: "",
-    video_url: "",
+    embed_url: "",
     status: "published" as "published" | "draft",
   });
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -45,13 +44,12 @@ function EditMediaForm({ id }: { id: string }) {
         slug: media.slug || "",
         description: media.description || "",
         type: media.type || "movie",
-        release_date: media.release_date || "",
-        duration: media.duration || "",
-        rating: media.rating || "",
+        year: media.year?.toString() || "",
+        duration: media.duration?.toString() || "",
+        rating: media.rating?.toString() || "",
         poster_url: media.poster_url || "",
         backdrop_url: media.backdrop_url || "",
-        trailer_url: media.trailer_url || "",
-        video_url: media.video_url || "",
+        embed_url: media.embed_url || "",
         status: media.status || "published",
       });
 
@@ -80,10 +78,18 @@ function EditMediaForm({ id }: { id: string }) {
     setLoading(true);
 
     try {
+      // Préparer les données avec conversion des nombres
+      const mediaData = {
+        ...formData,
+        year: formData.year ? parseInt(formData.year) : null,
+        duration: formData.duration ? parseInt(formData.duration) : null,
+        rating: formData.rating ? parseFloat(formData.rating) : null,
+      };
+
       // Mettre à jour le média
       const { error: mediaError } = await supabase
         .from("media")
-        .update(formData)
+        .update(mediaData)
         .eq("id", id);
 
       if (mediaError) throw mediaError;
@@ -210,13 +216,13 @@ function EditMediaForm({ id }: { id: string }) {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-2">
-                Date de sortie
+                Année (ex: 2025)
               </label>
               <input
-                type="date"
-                value={formData.release_date}
+                type="number"
+                value={formData.year}
                 onChange={(e) =>
-                  setFormData({ ...formData, release_date: e.target.value })
+                  setFormData({ ...formData, year: e.target.value })
                 }
                 className="w-full px-4 py-2 bg-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
               />
@@ -224,10 +230,10 @@ function EditMediaForm({ id }: { id: string }) {
 
             <div>
               <label className="block text-sm font-medium mb-2">
-                Durée (ex: 2h 30min)
+                Durée (en minutes, ex: 150)
               </label>
               <input
-                type="text"
+                type="number"
                 value={formData.duration}
                 onChange={(e) =>
                   setFormData({ ...formData, duration: e.target.value })
@@ -285,27 +291,13 @@ function EditMediaForm({ id }: { id: string }) {
 
           <div>
             <label className="block text-sm font-medium mb-2">
-              URL de la bande-annonce
+              URL de la vidéo (embed)
             </label>
             <input
               type="url"
-              value={formData.trailer_url}
+              value={formData.embed_url}
               onChange={(e) =>
-                setFormData({ ...formData, trailer_url: e.target.value })
-              }
-              className="w-full px-4 py-2 bg-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              URL de la vidéo
-            </label>
-            <input
-              type="url"
-              value={formData.video_url}
-              onChange={(e) =>
-                setFormData({ ...formData, video_url: e.target.value })
+                setFormData({ ...formData, embed_url: e.target.value })
               }
               className="w-full px-4 py-2 bg-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
               placeholder="Laisser vide pour conserver l'URL actuelle"
