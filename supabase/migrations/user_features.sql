@@ -153,9 +153,26 @@ CREATE TRIGGER recalculate_media_rating
 -- Fonction pour créer automatiquement un profil lors de l'inscription
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
+DECLARE
+  base_username TEXT;
+  final_username TEXT;
+  counter INT := 0;
 BEGIN
+  -- Extraire le nom de base de l'email
+  base_username := SPLIT_PART(NEW.email, '@', 1);
+  final_username := base_username;
+  
+  -- Vérifier si le username existe déjà et ajouter un suffixe si nécessaire
+  WHILE EXISTS (SELECT 1 FROM public.profiles WHERE username = final_username) LOOP
+    counter := counter + 1;
+    final_username := base_username || counter;
+  END LOOP;
+  
+  -- Insérer le profil avec le username unique
   INSERT INTO public.profiles (id, username)
-  VALUES (NEW.id, NEW.email);
+  VALUES (NEW.id, final_username)
+  ON CONFLICT (id) DO NOTHING;
+  
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

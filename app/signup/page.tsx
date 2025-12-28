@@ -36,6 +36,7 @@ export default function SignupPage() {
     }
 
     try {
+      // Créer le compte avec metadata
       const { data, error: signupError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -48,13 +49,8 @@ export default function SignupPage() {
 
       if (signupError) throw signupError;
 
+      // Le trigger Supabase créera automatiquement le profil
       if (data.user) {
-        // Créer le profil utilisateur
-        await supabase.from("profiles").upsert({
-          id: data.user.id,
-          username: formData.username || formData.email.split("@")[0],
-        });
-
         router.push("/");
       }
     } catch (err: any) {
