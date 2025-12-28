@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Film, Tv, Search, User, LogOut } from "lucide-react";
-import { useState } from "react";
+import { Film, Tv, Search, User, LogOut, ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function Navbar() {
@@ -11,7 +11,21 @@ export default function Navbar() {
   const router = useRouter();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [categories, setCategories] = useState<any[]>([]);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const supabase = createClient();
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  async function loadCategories() {
+    const { data } = await supabase
+      .from("categories")
+      .select("*")
+      .order("name");
+    setCategories(data || []);
+  }
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -66,6 +80,37 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            {/* Menu Catégories */}
+            <div className="relative">
+              <button
+                onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+                onBlur={() => setTimeout(() => setIsCategoriesOpen(false), 200)}
+                className={`flex items-center space-x-2 transition-colors hover:text-red-500 ${
+                  pathname.startsWith("/category")
+                    ? "text-red-500 font-semibold"
+                    : "text-muted-foreground"
+                }`}
+              >
+                <span>Catégories</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+
+              {/* Dropdown */}
+              {isCategoriesOpen && categories.length > 0 && (
+                <div className="absolute top-full left-0 mt-2 w-56 bg-background border border-border rounded-lg shadow-lg py-2 max-h-96 overflow-y-auto">
+                  {categories.map((category) => (
+                    <Link
+                      key={category.id}
+                      href={`/category/${category.slug}`}
+                      className="block px-4 py-2 text-sm hover:bg-secondary transition-colors"
+                    >
+                      {category.name}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Right Actions */}

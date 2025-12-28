@@ -12,7 +12,11 @@ interface MediaCarouselProps {
   viewAllHref?: string;
 }
 
-export default function MediaCarousel({ title, items, viewAllHref }: MediaCarouselProps) {
+export default function MediaCarousel({
+  title,
+  items,
+  viewAllHref,
+}: MediaCarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
