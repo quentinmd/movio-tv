@@ -2,15 +2,17 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState } from "react";
+import Link from "next/link";
 import MediaCard from "./MediaCard";
 import { Media } from "@/lib/types";
 
 interface MediaCarouselProps {
   title: string;
   items: Media[];
+  viewAllHref?: string;
 }
 
-export default function MediaCarousel({ title, items }: MediaCarouselProps) {
+export default function MediaCarousel({ title, items, viewAllHref }: MediaCarouselProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -44,7 +46,17 @@ export default function MediaCarousel({ title, items }: MediaCarouselProps) {
 
   return (
     <div className="relative group">
-      <h2 className="text-2xl font-bold mb-4">{title}</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold">{title}</h2>
+        {viewAllHref && (
+          <Link
+            href={viewAllHref}
+            className="text-sm text-red-500 hover:text-red-400 font-medium transition-colors"
+          >
+            Voir tout →
+          </Link>
+        )}
+      </div>
 
       {/* Bouton gauche */}
       {canScrollLeft && (

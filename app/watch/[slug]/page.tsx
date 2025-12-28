@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { Star, Calendar, Clock } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import VideoPlayer from "@/components/VideoPlayer";
@@ -162,14 +163,14 @@ export default async function WatchPage({ params }: WatchPageProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/30" />
             </>
           )}
-          
+
           {/* Titre et métadonnées en overlay */}
           <div className="absolute bottom-0 left-0 right-0 container mx-auto px-4 pb-8">
             <div className="max-w-4xl">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-2xl">
                 {media.title}
               </h1>
-              
+
               {/* Métadonnées principales */}
               <div className="flex flex-wrap items-center gap-4 mb-4">
                 {media.year && (
@@ -181,13 +182,17 @@ export default async function WatchPage({ params }: WatchPageProps) {
                 {media.duration && (
                   <div className="flex items-center space-x-2 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
                     <Clock className="h-4 w-4" />
-                    <span className="text-sm font-medium">{formatDuration(media.duration)}</span>
+                    <span className="text-sm font-medium">
+                      {formatDuration(media.duration)}
+                    </span>
                   </div>
                 )}
                 {media.rating && (
                   <div className="flex items-center space-x-2 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
                     <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
-                    <span className="text-sm font-medium">{media.rating.toFixed(1)}/10</span>
+                    <span className="text-sm font-medium">
+                      {media.rating.toFixed(1)}/10
+                    </span>
                   </div>
                 )}
                 <span className="inline-block px-3 py-1 bg-red-600 text-white text-sm font-semibold rounded-full">
@@ -199,12 +204,13 @@ export default async function WatchPage({ params }: WatchPageProps) {
               {categories.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat: any) => (
-                    <span
+                    <Link
                       key={cat.id}
-                      className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm"
+                      href={`/category/${cat.slug}`}
+                      className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm hover:bg-white/20 transition-colors"
                     >
                       {cat.name}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               )}

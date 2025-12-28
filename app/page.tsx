@@ -31,16 +31,40 @@ export default async function HomePage() {
   const movies = allMedia?.filter((m) => m.type === "movie") || [];
   const tvShows = allMedia?.filter((m) => m.type === "tv") || [];
 
-  // Grouper par catégories
-  const mediaByCategory = categories?.map((cat) => ({
-    category: cat,
-    items:
-      allMedia?.filter((media) => {
-        // Note: Cette requête devrait idéalement utiliser une jointure
-        // Pour simplifier, on va créer un carrousel "Tous les contenus" par catégorie
-        return true;
-      }) || [],
-  }));
+  // Grouper par catégories avec les médias réels
+  const mediaByCategory = await Promise.all(
+    categories?.map(async (cat) => {
+      const { data: mediaCategories } = await supabase
+        .from("media_categories")
+        .select(
+          `
+          media (
+            id,
+            title,
+            slug,
+            description,
+            poster_url,
+            type,
+            year,
+            rating,
+            status
+          )
+        `
+        )
+        .eq("category_id", cat.id)
+        .limit(12);
+
+      const items =
+        mediaCategories
+          ?.map((mc: any) => mc.media)
+          .filter((m: any) => m && m.status === "published") || [];
+
+      return {
+        category: cat,
+        items,
+      };
+    }) || []
+  );
 
   return (
     <div className="animate-fade-in">
@@ -130,6 +154,19 @@ export default async function HomePage() {
         {/* Séries */}
         {tvShows.length > 0 && (
           <MediaCarousel title="Séries TV" items={tvShows} />
+        )}
+
+        {/* Par catégorie */}
+        {mediaByCategory?.map(
+          (cat) =>
+            cat.items.length > 0 && (
+              <MediaCarousel
+                key={cat.category.id}
+                title={cat.category.name}
+                items={cat.items}
+                viewAllHref={`/category/${cat.category.slug}`}
+              />
+            )
         )}
 
         {/* Nouveautés */}
