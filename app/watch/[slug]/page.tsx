@@ -8,18 +8,18 @@ import { formatDuration } from "@/lib/utils";
 
 interface WatchPageProps {
   params: Promise<{
-    slug: string
-  }>
+    slug: string;
+  }>;
 }
 
 export async function generateMetadata({ params }: WatchPageProps) {
-  const { slug } = await params
+  const { slug } = await params;
   const supabase = await createClient();
-  const { data: media } = await supabase
+  const { data: media } = (await supabase
     .from("media")
     .select("title, description")
-    .eq('slug', slug)
-    .single() as { data: any };
+    .eq("slug", slug)
+    .single()) as { data: any };
 
   if (!media) {
     return {
@@ -34,16 +34,16 @@ export async function generateMetadata({ params }: WatchPageProps) {
 }
 
 export default async function WatchPage({ params }: WatchPageProps) {
-  const { slug } = await params
-  const supabase = await createClient()
+  const { slug } = await params;
+  const supabase = await createClient();
 
   // Récupérer le média
-  const { data: media } = await supabase
-    .from('media')
-    .select('*')
-    .eq('slug', slug)
+  const { data: media } = (await supabase
+    .from("media")
+    .select("*")
+    .eq("slug", slug)
     .eq("status", "published")
-    .single() as { data: any };
+    .single()) as { data: any };
 
   if (!media) {
     notFound();

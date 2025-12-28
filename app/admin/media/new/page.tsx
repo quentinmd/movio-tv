@@ -67,11 +67,18 @@ function NewMediaForm() {
   const onSubmit = async (data: MovieFormData | TVShowFormData) => {
     setIsSubmitting(true);
     try {
+      // Générer le slug à partir du titre
+      const slug = data.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+
       // Créer le média
       const { data: media, error: mediaError } = await supabase
         .from("media")
         .insert({
           ...data,
+          slug,
           type: mediaType,
           embed_url:
             mediaType === "movie" ? (data as MovieFormData).embed_url : null,

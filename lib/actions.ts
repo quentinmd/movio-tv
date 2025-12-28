@@ -7,8 +7,17 @@ import { redirect } from "next/navigation";
 export async function createMedia(formData: FormData) {
   const supabase = await createClient();
 
+  const title = formData.get("title") as string;
+  
+  // Générer le slug à partir du titre
+  const slug = title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+
   const data = {
-    title: formData.get("title") as string,
+    title,
+    slug,
     description: formData.get("description") as string,
     type: formData.get("type") as "movie" | "tv",
     poster_url: formData.get("poster_url") as string,
@@ -61,7 +70,10 @@ export async function updateMedia(id: string, formData: FormData) {
     status: formData.get("status") as "draft" | "published" | "archived",
   };
 
-  const { error } = await supabase.from("media").update(data as any).eq("id", id);
+  const { error } = await supabase
+    .from("media")
+    .update(data as any)
+    .eq("id", id);
 
   if (error) {
     throw new Error(error.message);
