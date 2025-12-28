@@ -62,9 +62,7 @@ function EditMediaForm({ id }: { id: string }) {
         .eq("media_id", id);
 
       if (mediaCategories) {
-        setSelectedCategories(
-          mediaCategories.map((mc: any) => mc.category_id)
-        );
+        setSelectedCategories(mediaCategories.map((mc: any) => mc.category_id));
       }
     }
   }
@@ -301,16 +299,16 @@ function EditMediaForm({ id }: { id: string }) {
 
           <div>
             <label className="block text-sm font-medium mb-2">
-              URL de la vidéo *
+              URL de la vidéo
             </label>
             <input
               type="url"
-              required
               value={formData.video_url}
               onChange={(e) =>
                 setFormData({ ...formData, video_url: e.target.value })
               }
               className="w-full px-4 py-2 bg-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              placeholder="Laisser vide pour conserver l'URL actuelle"
             />
           </div>
         </div>
