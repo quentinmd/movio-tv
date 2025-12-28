@@ -19,6 +19,15 @@ export default function Navbar() {
   useEffect(() => {
     loadCategories();
     loadUser();
+
+    // Écouter les changements d'authentification
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   async function loadUser() {
