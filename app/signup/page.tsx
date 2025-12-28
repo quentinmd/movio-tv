@@ -36,25 +36,53 @@ export default function SignupPage() {
     }
 
     try {
-      // Créer le compte avec metadata
+      // 1. Créer le compte utilisateur
       const { data, error: signupError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
-        options: {
-          data: {
-            username: formData.username || formData.email.split("@")[0],
-          },
-        },
       });
 
-      if (signupError) throw signupError;
+      if (signupError) {
+        console.error("Signup error:", signupError);
+        throw signupError;
+      }
 
-      // Le trigger Supabase créera automatiquement le profil
+      console.log("User created:", data);
+
+      // 2. Créer le profil après la création du compte
       if (data.user) {
+        const username = formData.username || formData.email.split("@")[0];
+        
+        // Attendre un peu que le trigger auth se termine
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        // Vérifier si le profil existe déjà (créé par trigger)
+        const { data: existingProfile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("id", data.user.id)
+          .single();
+
+        if (!existingProfile) {
+          // Le trigger n'a pas créé le profil, on le crée manuellement
+          const { error: profileError } = await supabase
+            .from("profiles")
+            .insert({
+              id: data.user.id,
+              username: username,
+            });
+
+          if (profileError) {
+            console.error("Profile creation error:", profileError);
+            // Ne pas bloquer l'utilisateur si le profil n'est pas créé
+          }
+        }
+
         router.push("/");
       }
     } catch (err: any) {
-      setError(err.message || "Une erreur est survenue");
+      console.error("Full error:", err);
+      setError(err.message || err.error_description || "Une erreur est survenue");
     } finally {
       setIsLoading(false);
     }

@@ -68,6 +68,7 @@ DROP POLICY IF EXISTS "Users can insert own favorites" ON public.user_favorites;
 DROP POLICY IF EXISTS "Users can delete own favorites" ON public.user_favorites;
 
 -- Profiles: Tout le monde peut lire, seul l'utilisateur peut modifier le sien
+-- Note: Pas de policy INSERT car le trigger avec SECURITY DEFINER s'en charge
 CREATE POLICY "Profiles are viewable by everyone"
   ON public.profiles FOR SELECT
   USING (true);
@@ -75,10 +76,6 @@ CREATE POLICY "Profiles are viewable by everyone"
 CREATE POLICY "Users can update own profile"
   ON public.profiles FOR UPDATE
   USING (auth.uid() = id);
-
-CREATE POLICY "Users can insert own profile"
-  ON public.profiles FOR INSERT
-  WITH CHECK (auth.uid() = id);
 
 -- User ratings: Lecture publique, modification par propriétaire
 CREATE POLICY "Ratings are viewable by everyone"
@@ -168,14 +165,14 @@ BEGIN
     final_username := base_username || counter;
   END LOOP;
   
-  -- Insérer le profil avec le username unique
+  -- Insérer le profil avec le username unique (bypass RLS)
   INSERT INTO public.profiles (id, username)
   VALUES (NEW.id, final_username)
   ON CONFLICT (id) DO NOTHING;
   
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
 -- Trigger pour créer le profil
 DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
