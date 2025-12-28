@@ -299,7 +299,6 @@ export default async function WatchPage({ params }: WatchPageProps) {
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
