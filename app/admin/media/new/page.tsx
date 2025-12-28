@@ -105,9 +105,11 @@ function NewMediaForm() {
 
       router.push("/admin/media");
       router.refresh();
-    } catch (error) {
-      console.error("Erreur:", error);
-      alert("Une erreur est survenue lors de la création");
+    } catch (error: any) {
+      console.error("Erreur complète:", error);
+      const errorMessage =
+        error?.message || error?.hint || JSON.stringify(error);
+      alert(`Erreur lors de la création: ${errorMessage}`);
     } finally {
       setIsSubmitting(false);
     }

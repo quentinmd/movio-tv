@@ -1,0 +1,13 @@
+# Movio TV - Robots.txt
+User-agent: *
+Allow: /
+Allow: /movies
+Allow: /series
+Allow: /watch/*
+
+# Pages admin protégées
+Disallow: /admin
+Disallow: /login
+
+# Sitemap
+Sitemap: https://movio-tv.vercel.app/sitemap.xml

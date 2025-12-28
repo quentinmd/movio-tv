@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: WatchPageProps) {
   const supabase = await createClient();
   const { data: media } = (await supabase
     .from("media")
-    .select("title, description")
+    .select("title, description, poster_url, backdrop_url, year, rating, type")
     .eq("slug", slug)
     .single()) as { data: any };
 
@@ -27,9 +27,34 @@ export async function generateMetadata({ params }: WatchPageProps) {
     };
   }
 
+  const title = `${media.title} - Movio TV`;
+  const description = media.description || `Regardez ${media.title} sur Movio TV`;
+  const imageUrl = media.backdrop_url || media.poster_url;
+
   return {
-    title: `${media.title} - Movio TV`,
-    description: media.description || `Regardez ${media.title} sur Movio TV`,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'video.movie',
+      url: `https://movio-tv.vercel.app/watch/${slug}`,
+      images: imageUrl ? [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: media.title,
+        }
+      ] : [],
+      siteName: 'Movio TV',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: imageUrl ? [imageUrl] : [],
+    },
   };
 }
 
@@ -93,8 +118,31 @@ export default async function WatchPage({ params }: WatchPageProps) {
 
   const categories = mediaCategories?.map((mc: any) => mc.categories) || [];
 
+  // JSON-LD pour SEO
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': media.type === 'movie' ? 'Movie' : 'TVSeries',
+    name: media.title,
+    description: media.description,
+    image: media.poster_url,
+    datePublished: media.year ? `${media.year}-01-01` : undefined,
+    aggregateRating: media.rating ? {
+      '@type': 'AggregateRating',
+      ratingValue: media.rating,
+      bestRating: 10,
+    } : undefined,
+    genre: categories.map((c: any) => c.name),
+  };
+
   return (
-    <div className="min-h-screen">
+    <>
+      {/* Données structurées JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      
+      <div className="min-h-screen">
       {/* Backdrop header */}
       <div className="relative w-full h-[300px] md:h-[400px]">
         {media.backdrop_url && (
@@ -252,5 +300,6 @@ export default async function WatchPage({ params }: WatchPageProps) {
         </div>
       </div>
     </div>
+    </>
   );
 }

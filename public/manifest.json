@@ -1,0 +1,37 @@
+{
+  "name": "Movio TV - Streaming de Films et Séries",
+  "short_name": "Movio TV",
+  "description": "Découvrez des milliers de films et séries en streaming haute qualité",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#dc2626",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["entertainment", "video"],
+  "shortcuts": [
+    {
+      "name": "Films",
+      "url": "/movies",
+      "description": "Parcourir les films"
+    },
+    {
+      "name": "Séries",
+      "url": "/series",
+      "description": "Parcourir les séries"
+    }
+  ]
+}
