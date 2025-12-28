@@ -49,13 +49,23 @@ export default function SignupPage() {
 
       console.log("User created:", data);
 
-      // 2. Créer le profil après la création du compte
-      if (data.user) {
+      // 2. Vérifier si l'email doit être confirmé
+      if (data.user && !data.session) {
+        // Email confirmation requise
+        setError(
+          "Un email de confirmation a été envoyé. Veuillez vérifier votre boîte mail."
+        );
+        setIsLoading(false);
+        return;
+      }
+
+      // 3. Créer le profil après la création du compte
+      if (data.user && data.session) {
         const username = formData.username || formData.email.split("@")[0];
-        
+
         // Attendre un peu que le trigger auth se termine
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
         // Vérifier si le profil existe déjà (créé par trigger)
         const { data: existingProfile } = await supabase
           .from("profiles")
@@ -78,11 +88,15 @@ export default function SignupPage() {
           }
         }
 
+        // Connecter automatiquement et rediriger
         router.push("/");
+        router.refresh();
       }
     } catch (err: any) {
       console.error("Full error:", err);
-      setError(err.message || err.error_description || "Une erreur est survenue");
+      setError(
+        err.message || err.error_description || "Une erreur est survenue"
+      );
     } finally {
       setIsLoading(false);
     }
