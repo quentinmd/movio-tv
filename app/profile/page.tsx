@@ -76,7 +76,8 @@ export default async function ProfilePage() {
       ? userRatings.reduce((sum, r) => sum + r.rating, 0) / userRatings.length
       : 0;
 
-  const favoriteMedia = favorites?.map((f: any) => f.media).filter((m) => m) || [];
+  const favoriteMedia =
+    favorites?.map((f: any) => f.media).filter((m) => m) || [];
   const watchedMedia =
     watchHistory?.map((w: any) => w.media).filter((m) => m) || [];
 

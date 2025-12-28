@@ -51,6 +51,22 @@ ALTER TABLE public.user_ratings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.watch_history ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_favorites ENABLE ROW LEVEL SECURITY;
 
+-- Supprimer les anciennes policies si elles existent
+DROP POLICY IF EXISTS "Profiles are viewable by everyone" ON public.profiles;
+DROP POLICY IF EXISTS "Users can update own profile" ON public.profiles;
+DROP POLICY IF EXISTS "Users can insert own profile" ON public.profiles;
+DROP POLICY IF EXISTS "Ratings are viewable by everyone" ON public.user_ratings;
+DROP POLICY IF EXISTS "Users can create own ratings" ON public.user_ratings;
+DROP POLICY IF EXISTS "Users can update own ratings" ON public.user_ratings;
+DROP POLICY IF EXISTS "Users can delete own ratings" ON public.user_ratings;
+DROP POLICY IF EXISTS "Users can view own watch history" ON public.watch_history;
+DROP POLICY IF EXISTS "Users can insert own watch history" ON public.watch_history;
+DROP POLICY IF EXISTS "Users can update own watch history" ON public.watch_history;
+DROP POLICY IF EXISTS "Users can delete own watch history" ON public.watch_history;
+DROP POLICY IF EXISTS "Users can view own favorites" ON public.user_favorites;
+DROP POLICY IF EXISTS "Users can insert own favorites" ON public.user_favorites;
+DROP POLICY IF EXISTS "Users can delete own favorites" ON public.user_favorites;
+
 -- Profiles: Tout le monde peut lire, seul l'utilisateur peut modifier le sien
 CREATE POLICY "Profiles are viewable by everyone"
   ON public.profiles FOR SELECT

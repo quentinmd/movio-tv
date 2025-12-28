@@ -94,7 +94,10 @@ export default function SignupPage() {
           <div className="space-y-4">
             {/* Username */}
             <div>
-              <label htmlFor="username" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium mb-2"
+              >
                 Nom d'utilisateur
               </label>
               <div className="relative">
@@ -135,7 +138,10 @@ export default function SignupPage() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium mb-2"
+              >
                 Mot de passe
               </label>
               <div className="relative">
@@ -170,7 +176,10 @@ export default function SignupPage() {
                   required
                   value={formData.confirmPassword}
                   onChange={(e) =>
-                    setFormData({ ...formData, confirmPassword: e.target.value })
+                    setFormData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
                   }
                   className="w-full pl-10 pr-4 py-3 bg-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                   placeholder="••••••••"
@@ -191,7 +200,10 @@ export default function SignupPage() {
           {/* Lien vers login */}
           <p className="text-center text-sm text-muted-foreground">
             Vous avez déjà un compte ?{" "}
-            <Link href="/login" className="text-red-500 hover:text-red-400 font-medium">
+            <Link
+              href="/login"
+              className="text-red-500 hover:text-red-400 font-medium"
+            >
               Se connecter
             </Link>
           </p>

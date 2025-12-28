@@ -259,10 +259,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
               {/* Système de notation */}
               <div className="bg-secondary p-6 rounded-lg">
                 <h2 className="text-xl font-bold mb-4">Votre avis</h2>
-                <RatingSystem
-                  mediaId={media.id}
-                  currentRating={media.rating}
-                />
+                <RatingSystem mediaId={media.id} currentRating={media.rating} />
               </div>
             </div>
 

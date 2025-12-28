@@ -56,7 +56,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
   if (!currentMedia) return null;
 
   return (
-    <section className="relative h-[70vh] min-h-[500px] w-full overflow-hidden group">
+    <section className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] min-h-[400px] md:min-h-[500px] w-full overflow-hidden group">
       {/* Images avec transition */}
       {items.map((media, index) => (
         <div
@@ -100,27 +100,32 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
 
       {/* Contenu avec transition */}
       <div className="relative z-20 container mx-auto px-4 h-full flex items-center">
-        <div key={currentIndex} className="max-w-2xl space-y-4 animate-fade-in">
-          <div className="inline-block px-3 py-1 bg-red-600 text-white text-sm font-semibold rounded">
+        <div
+          key={currentIndex}
+          className="max-w-2xl space-y-2 sm:space-y-3 md:space-y-4 animate-fade-in"
+        >
+          <div className="inline-block px-2 sm:px-3 py-1 bg-red-600 text-white text-xs sm:text-sm font-semibold rounded">
             {currentMedia.type === "movie" ? "Film" : "Série"} tendance
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-tight">
             {currentMedia.title}
           </h1>
 
           {currentMedia.description && (
-            <p className="text-lg text-gray-300 line-clamp-3">
+            <p className="text-sm sm:text-base md:text-lg text-gray-300 line-clamp-2 md:line-clamp-3">
               {currentMedia.description}
             </p>
           )}
 
-          <div className="flex items-center space-x-4 text-sm">
+          <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 text-xs sm:text-sm">
             {currentMedia.year && (
               <span className="text-gray-300">{currentMedia.year}</span>
             )}
             {currentMedia.duration && (
-              <span className="text-gray-300">{currentMedia.duration} min</span>
+              <span className="text-gray-300 hidden sm:inline">
+                {currentMedia.duration} min
+              </span>
             )}
             {currentMedia.rating && (
               <span className="flex items-center space-x-1 text-yellow-500">
@@ -131,20 +136,21 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
           </div>
 
           {/* Boutons d'action */}
-          <div className="flex space-x-4 pt-4">
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 md:space-x-4 pt-2 sm:pt-3 md:pt-4">
             <Link
               href={`/watch/${currentMedia.slug}`}
-              className="flex items-center space-x-2 bg-white text-black px-8 py-3 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+              className="flex items-center justify-center space-x-2 bg-white text-black px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-200 transition-colors"
             >
-              <Play className="h-5 w-5" fill="currentColor" />
-              <span>Regarder maintenant</span>
+              <Play className="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" />
+              <span className="hidden sm:inline">Regarder maintenant</span>
+              <span className="sm:hidden">Regarder</span>
             </Link>
 
             <Link
               href={`/watch/${currentMedia.slug}`}
-              className="flex items-center space-x-2 bg-white/20 backdrop-blur text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/30 transition-colors"
+              className="flex items-center justify-center space-x-2 bg-white/20 backdrop-blur text-white px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-white/30 transition-colors"
             >
-              <Info className="h-5 w-5" />
+              <Info className="h-4 w-4 sm:h-5 sm:w-5" />
               <span>Plus d'infos</span>
             </Link>
           </div>
@@ -153,15 +159,15 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
 
       {/* Indicateurs de pagination */}
       {items.length > 1 && (
-        <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center space-x-2">
+        <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 z-20 flex justify-center space-x-1.5 sm:space-x-2">
           {items.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`h-1 rounded-full transition-all ${
+              className={`h-0.5 sm:h-1 rounded-full transition-all ${
                 index === currentIndex
-                  ? "w-8 bg-white"
-                  : "w-4 bg-white/50 hover:bg-white/75"
+                  ? "w-6 sm:w-8 bg-white"
+                  : "w-3 sm:w-4 bg-white/50 hover:bg-white/75"
               }`}
               aria-label={`Aller au slide ${index + 1}`}
             />

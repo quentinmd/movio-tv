@@ -13,7 +13,10 @@ export default function MediaActions({ mediaId }: MediaActionsProps) {
   const [userId, setUserId] = useState<string | null>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isWatched, setIsWatched] = useState(false);
-  const [isLoading, setIsLoading] = useState({ favorite: false, watched: false });
+  const [isLoading, setIsLoading] = useState({
+    favorite: false,
+    watched: false,
+  });
 
   useEffect(() => {
     loadUserData();
@@ -127,9 +130,7 @@ export default function MediaActions({ mediaId }: MediaActionsProps) {
         } disabled:opacity-50 disabled:cursor-not-allowed`}
         title={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
       >
-        <Heart
-          className={`h-5 w-5 ${isFavorite ? "fill-current" : ""}`}
-        />
+        <Heart className={`h-5 w-5 ${isFavorite ? "fill-current" : ""}`} />
         <span>{isFavorite ? "Favoris" : "Ma liste"}</span>
       </button>
 
