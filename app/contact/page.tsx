@@ -16,14 +16,14 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simuler l'envoi
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     setSubmitted(true);
     setIsSubmitting(false);
     setFormData({ name: "", email: "", subject: "", message: "" });
-    
+
     setTimeout(() => setSubmitted(false), 5000);
   };
 
@@ -46,17 +46,21 @@ export default function ContactPage() {
         <div className="lg:col-span-2">
           <div className="bg-secondary/50 p-6 md:p-8 rounded-lg border border-border">
             <h2 className="text-2xl font-bold mb-6">Envoyez-nous un message</h2>
-            
+
             {submitted && (
               <div className="mb-6 p-4 bg-green-500/10 border border-green-500 text-green-500 rounded-lg">
-                Merci ! Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.
+                Merci ! Votre message a été envoyé avec succès. Nous vous
+                répondrons dans les plus brefs délais.
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium mb-2"
+                  >
                     Nom complet *
                   </label>
                   <input
@@ -64,14 +68,19 @@ export default function ContactPage() {
                     type="text"
                     required
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="John Doe"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium mb-2"
+                  >
                     Email *
                   </label>
                   <input
@@ -79,7 +88,9 @@ export default function ContactPage() {
                     type="email"
                     required
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                     placeholder="john@exemple.com"
                   />
@@ -87,14 +98,19 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-2">
+                <label
+                  htmlFor="subject"
+                  className="block text-sm font-medium mb-2"
+                >
                   Sujet *
                 </label>
                 <select
                   id="subject"
                   required
                   value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, subject: e.target.value })
+                  }
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                   <option value="">Sélectionnez un sujet</option>
@@ -108,7 +124,10 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium mb-2"
+                >
                   Message *
                 </label>
                 <textarea
@@ -116,7 +135,9 @@ export default function ContactPage() {
                   required
                   rows={6}
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                   placeholder="Décrivez votre demande en détail..."
                 />
@@ -153,7 +174,10 @@ export default function ContactPage() {
                 <Mail className="h-5 w-5 text-red-500 mt-0.5" />
                 <div>
                   <p className="font-medium">Email</p>
-                  <a href="mailto:support@movio-tv.com" className="text-sm text-muted-foreground hover:text-red-500">
+                  <a
+                    href="mailto:support@movio-tv.com"
+                    className="text-sm text-muted-foreground hover:text-red-500"
+                  >
                     support@movio-tv.com
                   </a>
                 </div>
@@ -183,17 +207,23 @@ export default function ContactPage() {
 
           {/* Temps de réponse */}
           <div className="bg-red-500/10 border border-red-500 p-6 rounded-lg">
-            <h3 className="text-xl font-bold mb-2 text-red-500">Temps de réponse</h3>
+            <h3 className="text-xl font-bold mb-2 text-red-500">
+              Temps de réponse
+            </h3>
             <p className="text-sm text-muted-foreground">
-              Nous nous efforçons de répondre à toutes les demandes dans un délai de 24 à 48 heures.
+              Nous nous efforçons de répondre à toutes les demandes dans un
+              délai de 24 à 48 heures.
             </p>
           </div>
 
           {/* FAQ */}
           <div className="bg-secondary/50 p-6 rounded-lg border border-border">
-            <h3 className="text-xl font-bold mb-2">Besoin d'une réponse rapide ?</h3>
+            <h3 className="text-xl font-bold mb-2">
+              Besoin d'une réponse rapide ?
+            </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Consultez notre FAQ, vous y trouverez peut-être déjà la réponse à votre question.
+              Consultez notre FAQ, vous y trouverez peut-être déjà la réponse à
+              votre question.
             </p>
             <a
               href="/faq"

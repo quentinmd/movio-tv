@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { Film, Tv, FolderOpen, Users, TrendingUp, Eye } from "lucide-react";
+import { Film, Tv, FolderOpen, Users, TrendingUp, Eye, Lightbulb } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
@@ -218,6 +218,19 @@ export default async function AdminDashboard() {
                 <p className="font-medium">Gérer les catégories</p>
                 <p className="text-sm text-muted-foreground group-hover:text-white/70">
                   Ajouter ou modifier des genres
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              href="/admin/suggestions"
+              className="flex items-center space-x-3 p-4 bg-background rounded-lg hover:bg-red-600 hover:text-white transition-colors group"
+            >
+              <Lightbulb className="h-5 w-5" />
+              <div>
+                <p className="font-medium">Suggestions utilisateurs</p>
+                <p className="text-sm text-muted-foreground group-hover:text-white/70">
+                  Voir les demandes de contenu
                 </p>
               </div>
             </Link>

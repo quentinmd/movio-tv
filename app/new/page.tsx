@@ -73,7 +73,7 @@ export default async function NewPage() {
                       </span>
                     </div>
                   )}
-                  
+
                   {/* Badge Nouveau */}
                   <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                     NOUVEAU
@@ -130,7 +130,7 @@ export default async function NewPage() {
                       </span>
                     </div>
                   )}
-                  
+
                   {/* Badge Nouveau */}
                   <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
                     NOUVEAU

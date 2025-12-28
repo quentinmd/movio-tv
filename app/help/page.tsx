@@ -1,4 +1,11 @@
-import { HelpCircle, Play, User, CreditCard, Settings, AlertCircle } from "lucide-react";
+import {
+  HelpCircle,
+  Play,
+  User,
+  CreditCard,
+  Settings,
+  AlertCircle,
+} from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
@@ -11,7 +18,8 @@ export default function HelpPage() {
     {
       icon: Play,
       title: "Lecture et Streaming",
-      description: "Résolution des problèmes de lecture, qualité vidéo, sous-titres",
+      description:
+        "Résolution des problèmes de lecture, qualité vidéo, sous-titres",
       topics: [
         "La vidéo ne se charge pas",
         "Problèmes de qualité vidéo",
@@ -125,44 +133,61 @@ export default function HelpPage() {
           <details className="group">
             <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors">
               <span className="font-semibold">Comment créer un compte ?</span>
-              <span className="transition-transform group-open:rotate-180">▼</span>
+              <span className="transition-transform group-open:rotate-180">
+                ▼
+              </span>
             </summary>
             <div className="p-4 text-muted-foreground">
-              Cliquez sur le bouton "S'inscrire" en haut à droite, remplissez le formulaire avec 
-              votre email et mot de passe, puis validez. Vous serez automatiquement connecté.
+              Cliquez sur le bouton "S'inscrire" en haut à droite, remplissez le
+              formulaire avec votre email et mot de passe, puis validez. Vous
+              serez automatiquement connecté.
             </div>
           </details>
 
           <details className="group">
             <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors">
-              <span className="font-semibold">Puis-je regarder sur plusieurs appareils ?</span>
-              <span className="transition-transform group-open:rotate-180">▼</span>
+              <span className="font-semibold">
+                Puis-je regarder sur plusieurs appareils ?
+              </span>
+              <span className="transition-transform group-open:rotate-180">
+                ▼
+              </span>
             </summary>
             <div className="p-4 text-muted-foreground">
-              Oui ! Movio TV fonctionne sur ordinateur, tablette et smartphone. Connectez-vous 
-              simplement avec vos identifiants sur n'importe quel appareil.
+              Oui ! Movio TV fonctionne sur ordinateur, tablette et smartphone.
+              Connectez-vous simplement avec vos identifiants sur n'importe quel
+              appareil.
             </div>
           </details>
 
           <details className="group">
             <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors">
-              <span className="font-semibold">La vidéo ne se charge pas, que faire ?</span>
-              <span className="transition-transform group-open:rotate-180">▼</span>
+              <span className="font-semibold">
+                La vidéo ne se charge pas, que faire ?
+              </span>
+              <span className="transition-transform group-open:rotate-180">
+                ▼
+              </span>
             </summary>
             <div className="p-4 text-muted-foreground">
-              Vérifiez votre connexion internet, actualisez la page, videz le cache de votre 
-              navigateur, ou essayez un autre navigateur. Si le problème persiste, contactez-nous.
+              Vérifiez votre connexion internet, actualisez la page, videz le
+              cache de votre navigateur, ou essayez un autre navigateur. Si le
+              problème persiste, contactez-nous.
             </div>
           </details>
 
           <details className="group">
             <summary className="cursor-pointer list-none flex items-center justify-between p-4 bg-secondary rounded-lg hover:bg-secondary/80 transition-colors">
-              <span className="font-semibold">Comment noter un film ou une série ?</span>
-              <span className="transition-transform group-open:rotate-180">▼</span>
+              <span className="font-semibold">
+                Comment noter un film ou une série ?
+              </span>
+              <span className="transition-transform group-open:rotate-180">
+                ▼
+              </span>
             </summary>
             <div className="p-4 text-muted-foreground">
-              Sur la page du contenu, cliquez sur les étoiles sous le titre pour donner votre note. 
-              Vous devez être connecté pour noter.
+              Sur la page du contenu, cliquez sur les étoiles sous le titre pour
+              donner votre note. Vous devez être connecté pour noter.
             </div>
           </details>
         </div>
@@ -170,7 +195,9 @@ export default function HelpPage() {
 
       {/* Contact */}
       <div className="mt-12 text-center">
-        <h2 className="text-2xl font-bold mb-4">Vous ne trouvez pas votre réponse ?</h2>
+        <h2 className="text-2xl font-bold mb-4">
+          Vous ne trouvez pas votre réponse ?
+        </h2>
         <p className="text-muted-foreground mb-6">
           Notre équipe support est là pour vous aider
         </p>

@@ -19,6 +19,7 @@ export default function Footer() {
       { label: "Films", href: "/movies" },
       { label: "Séries", href: "/series" },
       { label: "Nouveautés", href: "/new" },
+      { label: "Suggérer un contenu", href: "/suggest" },
     ],
   };
 
