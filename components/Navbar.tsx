@@ -13,11 +13,20 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState<any[]>([]);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
   const supabase = createClient();
 
   useEffect(() => {
     loadCategories();
+    loadUser();
   }, []);
+
+  async function loadUser() {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    setUser(user);
+  }
 
   async function loadCategories() {
     const { data } = await supabase
@@ -124,22 +133,41 @@ export default function Navbar() {
               <Search className="h-5 w-5" />
             </button>
 
-            {/* User Menu */}
-            <Link
-              href="/admin"
-              className="p-2 hover:bg-secondary rounded-full transition-colors"
-              aria-label="Profil"
-            >
-              <User className="h-5 w-5" />
-            </Link>
+            {/* User Menu - Différent selon l'état de connexion */}
+            {user ? (
+              <>
+                <Link
+                  href="/profile"
+                  className="p-2 hover:bg-secondary rounded-full transition-colors"
+                  aria-label="Profil"
+                >
+                  <User className="h-5 w-5" />
+                </Link>
 
-            <button
-              onClick={handleLogout}
-              className="p-2 hover:bg-secondary rounded-full transition-colors"
-              aria-label="Déconnexion"
-            >
-              <LogOut className="h-5 w-5" />
-            </button>
+                <button
+                  onClick={handleLogout}
+                  className="p-2 hover:bg-secondary rounded-full transition-colors"
+                  aria-label="Déconnexion"
+                >
+                  <LogOut className="h-5 w-5" />
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="px-4 py-2 text-sm font-medium hover:text-red-500 transition-colors"
+                >
+                  Connexion
+                </Link>
+                <Link
+                  href="/signup"
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors"
+                >
+                  S'inscrire
+                </Link>
+              </>
+            )}
           </div>
         </div>
 

@@ -5,6 +5,8 @@ import { Star, Calendar, Clock } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import VideoPlayer from "@/components/VideoPlayer";
 import TVShowPlayer from "@/components/TVShowPlayer";
+import RatingSystem from "@/components/RatingSystem";
+import MediaActions from "@/components/MediaActions";
 import { formatDuration } from "@/lib/utils";
 
 interface WatchPageProps {
@@ -247,6 +249,21 @@ export default async function WatchPage({ params }: WatchPageProps) {
                   </p>
                 </div>
               )}
+
+              {/* Actions utilisateur */}
+              <div className="bg-secondary p-6 rounded-lg space-y-6">
+                <h2 className="text-xl font-bold">Actions</h2>
+                <MediaActions mediaId={media.id} />
+              </div>
+
+              {/* Système de notation */}
+              <div className="bg-secondary p-6 rounded-lg">
+                <h2 className="text-xl font-bold mb-4">Votre avis</h2>
+                <RatingSystem
+                  mediaId={media.id}
+                  currentRating={media.rating}
+                />
+              </div>
             </div>
 
             {/* Sidebar - Poster et statistiques */}

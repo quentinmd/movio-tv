@@ -66,9 +66,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
           }`}
         >
           <Image
-            src={
-              media.backdrop_url || media.poster_url || "/placeholder.jpg"
-            }
+            src={media.backdrop_url || media.poster_url || "/placeholder.jpg"}
             alt={media.title}
             fill
             className="object-cover"
@@ -102,10 +100,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
 
       {/* Contenu avec transition */}
       <div className="relative z-20 container mx-auto px-4 h-full flex items-center">
-        <div
-          key={currentIndex}
-          className="max-w-2xl space-y-4 animate-fade-in"
-        >
+        <div key={currentIndex} className="max-w-2xl space-y-4 animate-fade-in">
           <div className="inline-block px-3 py-1 bg-red-600 text-white text-sm font-semibold rounded">
             {currentMedia.type === "movie" ? "Film" : "Série"} tendance
           </div>
@@ -125,9 +120,7 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
               <span className="text-gray-300">{currentMedia.year}</span>
             )}
             {currentMedia.duration && (
-              <span className="text-gray-300">
-                {currentMedia.duration} min
-              </span>
+              <span className="text-gray-300">{currentMedia.duration} min</span>
             )}
             {currentMedia.rating && (
               <span className="flex items-center space-x-1 text-yellow-500">
