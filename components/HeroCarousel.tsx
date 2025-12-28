@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Play, Info, ChevronLeft, ChevronRight } from "lucide-react";
+import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Media {
   id: string;
@@ -135,23 +135,14 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
             )}
           </div>
 
-          {/* Boutons d'action */}
-          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 md:space-x-4 pt-2 sm:pt-3 md:pt-4">
+          {/* Bouton d'action */}
+          <div className="pt-2 sm:pt-3 md:pt-4">
             <Link
               href={`/watch/${currentMedia.slug}`}
-              className="flex items-center justify-center space-x-2 bg-white text-black px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-200 transition-colors"
+              className="inline-flex items-center justify-center space-x-2 bg-white text-black px-6 sm:px-8 md:px-10 py-2.5 sm:py-3 md:py-3.5 rounded-lg text-sm sm:text-base font-semibold hover:bg-gray-200 transition-colors shadow-lg"
             >
               <Play className="h-4 w-4 sm:h-5 sm:w-5" fill="currentColor" />
-              <span className="hidden sm:inline">Regarder maintenant</span>
-              <span className="sm:hidden">Regarder</span>
-            </Link>
-
-            <Link
-              href={`/watch/${currentMedia.slug}`}
-              className="flex items-center justify-center space-x-2 bg-white/20 backdrop-blur text-white px-4 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-white/30 transition-colors"
-            >
-              <Info className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span>Plus d'infos</span>
+              <span>Regarder maintenant</span>
             </Link>
           </div>
         </div>
