@@ -3,7 +3,15 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
-import { Lightbulb, ThumbsUp, Film, Tv, ExternalLink, TrendingUp, Clock } from "lucide-react";
+import {
+  Lightbulb,
+  ThumbsUp,
+  Film,
+  Tv,
+  ExternalLink,
+  TrendingUp,
+  Clock,
+} from "lucide-react";
 
 interface Suggestion {
   id: string;
@@ -46,31 +54,35 @@ export default function SuggestPage() {
   }, [filter, sortBy]);
 
   async function loadUser() {
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     setUser(user);
-    
+
     if (user) {
       // Charger les votes de l'utilisateur
       const { data: votes } = await supabase
         .from("suggestion_votes")
         .select("suggestion_id")
         .eq("user_id", user.id);
-      
+
       if (votes) {
-        setMyVotes(new Set(votes.map(v => v.suggestion_id)));
+        setMyVotes(new Set(votes.map((v) => v.suggestion_id)));
       }
     }
   }
 
   async function loadSuggestions() {
     setIsLoading(true);
-    
+
     let query = supabase
       .from("content_suggestions")
-      .select(`
+      .select(
+        `
         *,
         profiles:user_id (username)
-      `)
+      `
+      )
       .eq("status", "pending");
 
     if (filter !== "all") {
@@ -90,7 +102,7 @@ export default function SuggestPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!user) {
       router.push("/login?redirect=/suggest");
       return;
@@ -99,16 +111,14 @@ export default function SuggestPage() {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase
-        .from("content_suggestions")
-        .insert({
-          user_id: user.id,
-          title: formData.title,
-          type: formData.type,
-          description: formData.description || null,
-          year: formData.year ? parseInt(formData.year) : null,
-          imdb_link: formData.imdb_link || null,
-        });
+      const { error } = await supabase.from("content_suggestions").insert({
+        user_id: user.id,
+        title: formData.title,
+        type: formData.type,
+        description: formData.description || null,
+        year: formData.year ? parseInt(formData.year) : null,
+        imdb_link: formData.imdb_link || null,
+      });
 
       if (error) throw error;
 
@@ -146,22 +156,20 @@ export default function SuggestPage() {
         .delete()
         .eq("suggestion_id", suggestionId)
         .eq("user_id", user.id);
-      
-      setMyVotes(prev => {
+
+      setMyVotes((prev) => {
         const newSet = new Set(prev);
         newSet.delete(suggestionId);
         return newSet;
       });
     } else {
       // Ajouter le vote
-      await supabase
-        .from("suggestion_votes")
-        .insert({
-          suggestion_id: suggestionId,
-          user_id: user.id,
-        });
-      
-      setMyVotes(prev => new Set(prev).add(suggestionId));
+      await supabase.from("suggestion_votes").insert({
+        suggestion_id: suggestionId,
+        user_id: user.id,
+      });
+
+      setMyVotes((prev) => new Set(prev).add(suggestionId));
     }
 
     loadSuggestions();
@@ -209,7 +217,9 @@ export default function SuggestPage() {
                   type="text"
                   required
                   value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                   placeholder="Ex: Inception, Breaking Bad..."
                 />
@@ -220,7 +230,12 @@ export default function SuggestPage() {
                 <select
                   required
                   value={formData.type}
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value as "movie" | "series" })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      type: e.target.value as "movie" | "series",
+                    })
+                  }
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                 >
                   <option value="movie">Film</option>
@@ -235,7 +250,9 @@ export default function SuggestPage() {
                   min="1900"
                   max={new Date().getFullYear() + 1}
                   value={formData.year}
-                  onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, year: e.target.value })
+                  }
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                   placeholder="2024"
                 />
@@ -248,7 +265,9 @@ export default function SuggestPage() {
                 <input
                   type="url"
                   value={formData.imdb_link}
-                  onChange={(e) => setFormData({ ...formData, imdb_link: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, imdb_link: e.target.value })
+                  }
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
                   placeholder="https://www.imdb.com/title/tt..."
                 />
@@ -261,7 +280,9 @@ export default function SuggestPage() {
                 <textarea
                   rows={4}
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
                   placeholder="Parlez-nous brièvement de ce film/série..."
                 />
@@ -295,7 +316,9 @@ export default function SuggestPage() {
               <button
                 onClick={() => setFilter("all")}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  filter === "all" ? "bg-red-600" : "bg-secondary hover:bg-secondary/80"
+                  filter === "all"
+                    ? "bg-red-600"
+                    : "bg-secondary hover:bg-secondary/80"
                 }`}
               >
                 Tous
@@ -303,7 +326,9 @@ export default function SuggestPage() {
               <button
                 onClick={() => setFilter("movie")}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
-                  filter === "movie" ? "bg-red-600" : "bg-secondary hover:bg-secondary/80"
+                  filter === "movie"
+                    ? "bg-red-600"
+                    : "bg-secondary hover:bg-secondary/80"
                 }`}
               >
                 <Film className="h-4 w-4" />
@@ -312,7 +337,9 @@ export default function SuggestPage() {
               <button
                 onClick={() => setFilter("series")}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
-                  filter === "series" ? "bg-red-600" : "bg-secondary hover:bg-secondary/80"
+                  filter === "series"
+                    ? "bg-red-600"
+                    : "bg-secondary hover:bg-secondary/80"
                 }`}
               >
                 <Tv className="h-4 w-4" />
@@ -325,7 +352,9 @@ export default function SuggestPage() {
               <button
                 onClick={() => setSortBy("votes")}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
-                  sortBy === "votes" ? "bg-red-600" : "bg-secondary hover:bg-secondary/80"
+                  sortBy === "votes"
+                    ? "bg-red-600"
+                    : "bg-secondary hover:bg-secondary/80"
                 }`}
               >
                 <TrendingUp className="h-4 w-4" />
@@ -334,7 +363,9 @@ export default function SuggestPage() {
               <button
                 onClick={() => setSortBy("recent")}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2 ${
-                  sortBy === "recent" ? "bg-red-600" : "bg-secondary hover:bg-secondary/80"
+                  sortBy === "recent"
+                    ? "bg-red-600"
+                    : "bg-secondary hover:bg-secondary/80"
                 }`}
               >
                 <Clock className="h-4 w-4" />
@@ -371,22 +402,35 @@ export default function SuggestPage() {
                         ) : (
                           <Tv className="h-5 w-5 text-red-500" />
                         )}
-                        <h3 className="text-xl font-bold">{suggestion.title}</h3>
+                        <h3 className="text-xl font-bold">
+                          {suggestion.title}
+                        </h3>
                         {suggestion.year && (
-                          <span className="text-sm text-muted-foreground">({suggestion.year})</span>
+                          <span className="text-sm text-muted-foreground">
+                            ({suggestion.year})
+                          </span>
                         )}
                       </div>
 
                       {suggestion.description && (
-                        <p className="text-muted-foreground mb-3">{suggestion.description}</p>
+                        <p className="text-muted-foreground mb-3">
+                          {suggestion.description}
+                        </p>
                       )}
 
                       <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                         <span>
-                          Suggéré par <span className="text-foreground font-medium">{suggestion.profiles?.username || "Anonyme"}</span>
+                          Suggéré par{" "}
+                          <span className="text-foreground font-medium">
+                            {suggestion.profiles?.username || "Anonyme"}
+                          </span>
                         </span>
                         <span>•</span>
-                        <span>{new Date(suggestion.created_at).toLocaleDateString("fr-FR")}</span>
+                        <span>
+                          {new Date(suggestion.created_at).toLocaleDateString(
+                            "fr-FR"
+                          )}
+                        </span>
                         {suggestion.imdb_link && (
                           <>
                             <span>•</span>
@@ -414,7 +458,11 @@ export default function SuggestPage() {
                       }`}
                       title={!user ? "Connectez-vous pour voter" : ""}
                     >
-                      <ThumbsUp className={`h-5 w-5 ${myVotes.has(suggestion.id) ? "fill-current" : ""}`} />
+                      <ThumbsUp
+                        className={`h-5 w-5 ${
+                          myVotes.has(suggestion.id) ? "fill-current" : ""
+                        }`}
+                      />
                       <span>{suggestion.votes}</span>
                     </button>
                   </div>
@@ -428,7 +476,10 @@ export default function SuggestPage() {
       {!user && (
         <div className="mt-8 p-6 bg-red-500/10 border border-red-500 rounded-lg text-center">
           <p className="text-muted-foreground">
-            <a href="/login?redirect=/suggest" className="text-red-500 hover:text-red-400 font-medium">
+            <a
+              href="/login?redirect=/suggest"
+              className="text-red-500 hover:text-red-400 font-medium"
+            >
               Connectez-vous
             </a>{" "}
             pour suggérer des contenus et voter pour vos favoris

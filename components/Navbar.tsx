@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Film, Tv, Search, User, LogOut, ChevronDown } from "lucide-react";
+import { Film, Tv, Search, User, LogOut, ChevronDown, Lightbulb } from "lucide-react";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -63,6 +63,7 @@ export default function Navbar() {
     { href: "/", label: "Accueil", icon: null },
     { href: "/movies", label: "Films", icon: Film },
     { href: "/series", label: "Séries", icon: Tv },
+    { href: "/suggest", label: "Suggérer", icon: Lightbulb },
   ];
 
   return (
