@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/next";
@@ -66,6 +67,13 @@ export default function RootLayout({
   return (
     <html lang="fr" className="dark">
       <body className={inter.className}>
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9555374477541034"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />
