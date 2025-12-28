@@ -8,12 +8,12 @@ export async function createMedia(formData: FormData) {
   const supabase = await createClient();
 
   const title = formData.get("title") as string;
-  
+
   // Générer le slug à partir du titre
   const slug = title
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 
   const data = {
     title,

@@ -70,14 +70,17 @@ function NewMediaForm() {
       // Générer le slug à partir du titre
       const slug = data.title
         .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '');
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+
+      // Exclure categories de l'objet data
+      const { categories, ...mediaData } = data;
 
       // Créer le média
       const { data: media, error: mediaError } = await supabase
         .from("media")
         .insert({
-          ...data,
+          ...mediaData,
           slug,
           type: mediaType,
           embed_url:
@@ -91,8 +94,8 @@ function NewMediaForm() {
       if (mediaError) throw mediaError;
 
       // Associer les catégories
-      if (media && data.categories.length > 0) {
-        const mediaCategories = data.categories.map((categoryId) => ({
+      if (media && categories.length > 0) {
+        const mediaCategories = categories.map((categoryId) => ({
           media_id: media.id,
           category_id: categoryId,
         }));
