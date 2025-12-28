@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Film, Tv, Search, User, LogOut, ChevronDown, Lightbulb } from "lucide-react";
+import {
+  Film,
+  Tv,
+  Search,
+  User,
+  LogOut,
+  ChevronDown,
+  Lightbulb,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 

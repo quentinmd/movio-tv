@@ -41,7 +41,7 @@ export default function RatingSystem({
       .select("rating")
       .eq("user_id", user.id)
       .eq("media_id", mediaId)
-      .single();
+      .maybeSingle();
 
     if (data) {
       setUserRating(data.rating);

@@ -36,7 +36,7 @@ export default function MediaActions({ mediaId }: MediaActionsProps) {
       .select("id")
       .eq("user_id", user.id)
       .eq("media_id", mediaId)
-      .single();
+      .maybeSingle();
 
     setIsFavorite(!!favoriteData);
 
@@ -46,7 +46,7 @@ export default function MediaActions({ mediaId }: MediaActionsProps) {
       .select("completed")
       .eq("user_id", user.id)
       .eq("media_id", mediaId)
-      .single();
+      .maybeSingle();
 
     setIsWatched(watchData?.completed || false);
   }
