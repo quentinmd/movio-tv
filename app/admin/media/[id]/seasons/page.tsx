@@ -16,7 +16,7 @@ export default async function ManageSeasonsPage({ params }: PageProps) {
     .from("media")
     .select("*")
     .eq("id", id)
-    .eq("type", "series")
+    .eq("type", "tv")
     .single();
 
   if (!series) {
