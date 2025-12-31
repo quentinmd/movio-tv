@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Plus, Film, Tv, Edit, Trash2 } from "lucide-react";
+import { Plus, Film, Tv, Edit, Trash2, List } from "lucide-react";
 
 export const metadata = {
   title: "Gestion des médias - Admin",
@@ -101,6 +101,15 @@ export default async function MediaListPage() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end space-x-2">
+                      {item.type === "tv" && (
+                        <Link
+                          href={`/admin/media/${item.id}/seasons`}
+                          className="p-2 hover:bg-purple-500/10 hover:text-purple-500 rounded-lg transition-colors"
+                          title="Gérer les saisons"
+                        >
+                          <List className="h-4 w-4" />
+                        </Link>
+                      )}
                       <Link
                         href={`/admin/media/${item.id}/edit`}
                         className="p-2 hover:bg-background rounded-lg transition-colors"
