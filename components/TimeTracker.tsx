@@ -16,7 +16,8 @@ export default function TimeTracker({ pageName }: TimeTrackerProps) {
     // Fonction pour envoyer le temps passé
     const sendTimeSpent = () => {
       const timeSpent = Math.floor((Date.now() - startTimeRef.current) / 1000);
-      if (timeSpent > 5) { // Ne tracker que si plus de 5 secondes
+      if (timeSpent > 5) {
+        // Ne tracker que si plus de 5 secondes
         trackTimeSpent(pageName, timeSpent);
       }
     };

@@ -2,8 +2,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -89,6 +91,12 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        
+        {/* Tracker de changements de page pour Google Analytics */}
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
+
         <Navbar />
         <main className="min-h-screen">{children}</main>
         <Footer />
