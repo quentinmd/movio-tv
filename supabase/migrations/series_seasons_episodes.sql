@@ -1,7 +1,7 @@
 -- Table pour les saisons
 CREATE TABLE IF NOT EXISTS public.seasons (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  series_id UUID REFERENCES public.media(id) ON DELETE CASCADE NOT NULL,
+  media_id UUID REFERENCES public.media(id) ON DELETE CASCADE NOT NULL,
   season_number INTEGER NOT NULL,
   title TEXT,
   description TEXT,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS public.seasons (
   episode_count INTEGER DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(series_id, season_number)
+  UNIQUE(media_id, season_number)
 );
 
 -- Table pour les épisodes
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS public.episodes (
 );
 
 -- Index pour performance
-CREATE INDEX IF NOT EXISTS idx_seasons_series ON public.seasons(series_id);
+CREATE INDEX IF NOT EXISTS idx_seasons_media ON public.seasons(media_id);
 CREATE INDEX IF NOT EXISTS idx_episodes_season ON public.episodes(season_id);
 CREATE INDEX IF NOT EXISTS idx_seasons_number ON public.seasons(season_number);
 CREATE INDEX IF NOT EXISTS idx_episodes_number ON public.episodes(episode_number);

@@ -26,11 +26,13 @@ export default async function ManageSeasonsPage({ params }: PageProps) {
   // Récupérer les saisons avec leurs épisodes
   const { data: seasons } = await supabase
     .from("seasons")
-    .select(`
+    .select(
+      `
       *,
       episodes:episodes(*)
-    `)
-    .eq("series_id", id)
+    `
+    )
+    .eq("media_id", id)
     .order("season_number", { ascending: true });
 
   return (
@@ -42,7 +44,9 @@ export default async function ManageSeasonsPage({ params }: PageProps) {
           </div>
           <div>
             <h1 className="text-3xl font-bold">{series.title}</h1>
-            <p className="text-muted-foreground">Gestion des saisons et épisodes</p>
+            <p className="text-muted-foreground">
+              Gestion des saisons et épisodes
+            </p>
           </div>
         </div>
 
@@ -92,19 +96,24 @@ export default async function ManageSeasonsPage({ params }: PageProps) {
                     {season.title && ` - ${season.title}`}
                   </h3>
                   {season.description && (
-                    <p className="text-muted-foreground mb-3">{season.description}</p>
+                    <p className="text-muted-foreground mb-3">
+                      {season.description}
+                    </p>
                   )}
                   <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                     {season.release_date && (
                       <div className="flex items-center space-x-1">
                         <Calendar className="h-4 w-4" />
                         <span>
-                          {new Date(season.release_date).toLocaleDateString("fr-FR")}
+                          {new Date(season.release_date).toLocaleDateString(
+                            "fr-FR"
+                          )}
                         </span>
                       </div>
                     )}
                     <span>
-                      {season.episode_count || 0} épisode{season.episode_count !== 1 ? "s" : ""}
+                      {season.episode_count || 0} épisode
+                      {season.episode_count !== 1 ? "s" : ""}
                     </span>
                   </div>
                 </div>
@@ -130,7 +139,9 @@ export default async function ManageSeasonsPage({ params }: PageProps) {
               {season.episodes && season.episodes.length > 0 ? (
                 <div className="grid gap-3 mt-4">
                   {season.episodes
-                    .sort((a: any, b: any) => a.episode_number - b.episode_number)
+                    .sort(
+                      (a: any, b: any) => a.episode_number - b.episode_number
+                    )
                     .map((episode: any) => (
                       <div
                         key={episode.id}
@@ -162,7 +173,9 @@ export default async function ManageSeasonsPage({ params }: PageProps) {
                               )}
                               {episode.release_date && (
                                 <span>
-                                  {new Date(episode.release_date).toLocaleDateString("fr-FR")}
+                                  {new Date(
+                                    episode.release_date
+                                  ).toLocaleDateString("fr-FR")}
                                 </span>
                               )}
                             </div>

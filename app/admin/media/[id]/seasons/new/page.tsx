@@ -35,7 +35,7 @@ export default function NewSeasonPage({ params }: PageProps) {
       const supabase = createClient();
 
       const { error: insertError } = await supabase.from("seasons").insert({
-        series_id: seriesId,
+        media_id: seriesId,
         season_number: parseInt(seasonNumber),
         title: title || null,
         description: description || null,
@@ -62,9 +62,7 @@ export default function NewSeasonPage({ params }: PageProps) {
         </div>
         <div>
           <h1 className="text-3xl font-bold">Nouvelle saison</h1>
-          <p className="text-muted-foreground">
-            Ajouter une saison à la série
-          </p>
+          <p className="text-muted-foreground">Ajouter une saison à la série</p>
         </div>
       </div>
 

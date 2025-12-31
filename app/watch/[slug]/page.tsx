@@ -93,7 +93,7 @@ export default async function WatchPage({ params }: WatchPageProps) {
         )
       `
       )
-      .eq("series_id", media.id)
+      .eq("media_id", media.id)
       .order("season_number", { ascending: true })
       .returns<any[]>();
 
