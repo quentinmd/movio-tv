@@ -7,6 +7,7 @@ import VideoPlayer from "@/components/VideoPlayer";
 import TVShowPlayer from "@/components/TVShowPlayer";
 import RatingSystem from "@/components/RatingSystem";
 import MediaActions from "@/components/MediaActions";
+import TimeTracker from "@/components/TimeTracker";
 import { formatDuration } from "@/lib/utils";
 
 interface WatchPageProps {
@@ -144,6 +145,9 @@ export default async function WatchPage({ params }: WatchPageProps) {
 
   return (
     <>
+      {/* Tracker de temps passé sur la page */}
+      <TimeTracker pageName={`watch_${media.type}_${media.title}`} />
+
       {/* Données structurées JSON-LD */}
       <script
         type="application/ld+json"
